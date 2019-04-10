@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  varnish:
+    build: './varnish'
+    container_name: varnish
+    networks:
+      default:
+        ipv4_address: 172.16.238.10
+    ports:
+      - 8080:8080
+  lb:
+    build: './lb'
+    container_name: lb
+    networks:
+      default:
+        ipv4_address: 172.16.238.20
+  app1:
+    build: './app1'
+    container_name: app1
+    networks:
+      default:
+        ipv4_address: 172.16.238.30
+  app2:
+    build: './app2'
+    container_name: app2
+    networks:
+      default:
+        ipv4_address: 172.16.238.40
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
