@@ -12,10 +12,22 @@
 # new 4.0 format.
 vcl 4.0;
 
+import directors;
 # Default backend definition. Set this to point to your content server.
-backend default {
-    .host = "172.16.238.20";
+backend app1 {
+    .host = "172.16.238.30";
     .port = "80";
+}
+
+backend app2 {
+    .host = "172.16.238.40";
+    .port = "80";
+}
+
+sub vcl_init {
+    new vdir = directors.round_robin();
+    vdir.add_backend(app1);
+    vdir.add_backend(app2);
 }
 
 sub vcl_recv {
